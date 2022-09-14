@@ -1,6 +1,7 @@
 {
   "name": "star-wars-dice-roller",
   "version": "0.1.0",
+  "homepage": "https://thirionlogan.github.io/star-wars-dice-roller",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -10,13 +11,17 @@
     "@types/node": "^16.11.59",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
+    "bootstrap": "^5.2.1",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.8.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -39,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-bootstrap": "^0.32.30",
+    "gh-pages": "^4.0.0"
   }
 }
