@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './App.css';
+import pluralize from 'pluralize';
 
 declare type DiceSide = {
   success: number;
@@ -171,6 +172,18 @@ const dice: {
 
 declare type FormControlElement = HTMLInputElement | HTMLTextAreaElement;
 
+declare type DiceNames =
+  | 'boost'
+  | 'setback'
+  | 'ability'
+  | 'difficulty'
+  | 'proficiency'
+  | 'challenge'
+  | 'force';
+
+const capitalizeFirstLetter = (string: string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);
+
 const sumSides = (...sides: DiceSide[]): DiceSide => {
   return sides.reduce((a, b) => {
     return {
@@ -186,115 +199,103 @@ const sumSides = (...sides: DiceSide[]): DiceSide => {
   }, BLANK);
 };
 
+const sumResults = ({
+  success,
+  advantage,
+  failure,
+  threat,
+  triumph,
+  despair,
+  dark,
+  light,
+}: DiceSide): DiceSide => {
+  return {
+    success: Math.max(success + triumph - (failure + despair), 0),
+    advantage: Math.max(advantage - threat, 0),
+    failure: Math.max(failure + despair - (success + triumph), 0),
+    threat: Math.max(threat - advantage, 0),
+    triumph: Math.max(triumph - despair, 0),
+    despair: Math.max(despair - triumph, 0),
+    dark,
+    light,
+  };
+};
+
 const rollDice = (dice: Dice): DiceSide =>
   dice.sides[Math.floor(Math.random() * dice.sides.length)];
 
-function App() {
-  const diceTypes = [
-    'Boost',
-    'Setback',
-    'Ability',
-    'Difficulty',
-    'Proficiency',
-    'Challenge',
-    'Force',
-  ];
+const resultToString = (result: DiceSide): string => {
+  return Object.entries(result)
+    .map(([key, value]) => (value ? pluralize(key, value, true) : ''))
+    .filter((value) => !!value)
+    .join(', ');
+};
 
-  const [result, setResult] = useState('');
-  const [boostDie, setBoostDie] = useState(0);
-  const [setbackDie, setSetbackDie] = useState(0);
-  const [abilityDie, setAbilityDie] = useState(0);
-  const [difficultyDie, setDifficultyDie] = useState(0);
-  const [proficiencyDie, setProficiencyDie] = useState(0);
-  const [challengeDie, setChallengeDie] = useState(0);
-  const [forceDie, setForceDie] = useState(0);
+function App() {
+  const [result, setResult] = useState(BLANK);
+  const [diceState, setDiceState] = useState({
+    boost: 0,
+    setback: 0,
+    ability: 0,
+    difficulty: 0,
+    proficiency: 0,
+    challenge: 0,
+    force: 0,
+  });
 
   const handleRoll: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
     let rolls: DiceSide[] = [];
 
-    for (let i = 0; i < boostDie; i++) {
-      rolls.push(rollDice(dice.boost));
-    }
+    Object.keys(dice).forEach((diceType) => {
+      for (let i = 0; i < diceState[diceType as DiceNames]; i++) {
+        rolls.push(rollDice(dice[diceType as DiceNames]));
+      }
+    });
 
-    for (let i = 0; i < setbackDie; i++) {
-      rolls.push(rollDice(dice.setback));
-    }
-
-    for (let i = 0; i < abilityDie; i++) {
-      rolls.push(rollDice(dice.ability));
-    }
-
-    for (let i = 0; i < difficultyDie; i++) {
-      rolls.push(rollDice(dice.difficulty));
-    }
-
-    for (let i = 0; i < proficiencyDie; i++) {
-      rolls.push(rollDice(dice.proficiency));
-    }
-
-    for (let i = 0; i < challengeDie; i++) {
-      rolls.push(rollDice(dice.challenge));
-    }
-
-    for (let i = 0; i < forceDie; i++) {
-      rolls.push(rollDice(dice.force));
-    }
-
-    event.preventDefault();
-    setResult(JSON.stringify(sumSides(...rolls)));
+    setResult(sumSides(...rolls));
   };
 
-  const handleSetBoostDie: React.ChangeEventHandler<FormControlElement> = (
+  const handleSetDiceState: React.ChangeEventHandler<FormControlElement> = (
     event
   ) => {
-    setBoostDie(+event.target.value);
-  };
-
-  const handleSetSetbackDie: React.ChangeEventHandler<FormControlElement> = (
-    event
-  ) => {
-    setSetbackDie(+event.target.value);
+    setDiceState({
+      ...diceState,
+      [event.target.name]: event.target.value,
+    });
   };
 
   return (
     <div className='App'>
       <Form onSubmit={handleRoll}>
-        <Form.Group>
-          <Form.Label>Boost Die</Form.Label>
-          <Form.Control
-            type='number'
-            min={0}
-            step={1}
-            value={boostDie}
-            onChange={handleSetBoostDie}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Setback Die</Form.Label>
-          <Form.Control
-            type='number'
-            min={0}
-            step={1}
-            value={setbackDie}
-            onChange={handleSetSetbackDie}
-          />
-        </Form.Group>
+        {Object.keys(dice).map((diceType) => {
+          return (
+            <Form.Group key={diceType + 'formgroup'}>
+              <Form.Label>{`${capitalizeFirstLetter(
+                diceType
+              )} Die`}</Form.Label>
+              <Form.Control
+                type='number'
+                min={0}
+                step={1}
+                value={diceState[diceType as DiceNames]}
+                name={diceType}
+                onChange={handleSetDiceState}
+              />
+            </Form.Group>
+          );
+        })}
         <Button type='submit'>Roll</Button>
       </Form>
-      <div>Result: {result ? result : ''}</div>
+      <div>The dice rolled: {resultToString(result)}</div>
+      <div>The end result: {resultToString(sumResults(result))}</div>
+      <div>
+        * Sucesses from triumphs have been calculated as additional successes.
+        <br />
+        ** Failures from despairs have been calculated as additional failures.
+      </div>
     </div>
   );
 }
-
-/*
-  TODO:
-  Boost die (d6)
-  Setback die (d6)
-  Ability die (d8)
-  Difficulty die (d8)
-  Proficiency die (d12)
-  Challenge die (d12)
-  Force die (d12)
-*/
 
 export default App;
