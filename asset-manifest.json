@@ -1,15 +1,20 @@
 {
   "files": {
     "main.css": "/star-wars-dice-roller/static/css/main.4ea24607.css",
-    "main.js": "/star-wars-dice-roller/static/js/main.4f725454.js",
+    "main.js": "/star-wars-dice-roller/static/js/main.68107021.js",
     "static/js/787.5faa7809.chunk.js": "/star-wars-dice-roller/static/js/787.5faa7809.chunk.js",
+    "static/media/Proficiency_Blank.png": "/star-wars-dice-roller/static/media/Proficiency_Blank.4c68d05589cd7a68603e.png",
+    "static/media/Difficulty_Blank.png": "/star-wars-dice-roller/static/media/Difficulty_Blank.023550bd78361b368838.png",
+    "static/media/Ability_Blank.png": "/star-wars-dice-roller/static/media/Ability_Blank.7138510705ef7ffb1bb9.png",
+    "static/media/Force_Blank.png": "/star-wars-dice-roller/static/media/Force_Blank.787e7410bdc7eac35964.png",
+    "static/media/Challenge_Blank.png": "/star-wars-dice-roller/static/media/Challenge_Blank.59c0a9f244e9bfdfe0bf.png",
     "index.html": "/star-wars-dice-roller/index.html",
     "main.4ea24607.css.map": "/star-wars-dice-roller/static/css/main.4ea24607.css.map",
-    "main.4f725454.js.map": "/star-wars-dice-roller/static/js/main.4f725454.js.map",
+    "main.68107021.js.map": "/star-wars-dice-roller/static/js/main.68107021.js.map",
     "787.5faa7809.chunk.js.map": "/star-wars-dice-roller/static/js/787.5faa7809.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4ea24607.css",
-    "static/js/main.4f725454.js"
+    "static/js/main.68107021.js"
   ]
 }
