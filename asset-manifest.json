@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/star-wars-dice-roller/static/css/main.4ea24607.css",
-    "main.js": "/star-wars-dice-roller/static/js/main.6da49873.js",
+    "main.js": "/star-wars-dice-roller/static/js/main.4f725454.js",
     "static/js/787.5faa7809.chunk.js": "/star-wars-dice-roller/static/js/787.5faa7809.chunk.js",
     "index.html": "/star-wars-dice-roller/index.html",
     "main.4ea24607.css.map": "/star-wars-dice-roller/static/css/main.4ea24607.css.map",
-    "main.6da49873.js.map": "/star-wars-dice-roller/static/js/main.6da49873.js.map",
+    "main.4f725454.js.map": "/star-wars-dice-roller/static/js/main.4f725454.js.map",
     "787.5faa7809.chunk.js.map": "/star-wars-dice-roller/static/js/787.5faa7809.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4ea24607.css",
-    "static/js/main.6da49873.js"
+    "static/js/main.4f725454.js"
   ]
 }
